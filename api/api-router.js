@@ -2,7 +2,7 @@ const router = require("express").Router();
 
 const bcrypt = require("bcryptjs");
 
-const Users = require("../users/users.model.js");
+const Users = require("../users/users-model.js");
 
 //register a new user
 router.post("/register", (req, res) => {
