@@ -1,13 +1,17 @@
+const bcrypt = require("bcryptjs");
+
 const router = require("express").Router();
 
-const bcrypt = require("bcryptjs");
+const authRouter = require("../auth/auth-router");
+
+router.use('/auth', authRouter);
 
 const Users = require("../users/users-model.js");
 
 //register a new user
 router.post("/register", (req, res) => {
   let user = req.body; // username and password combination
-  const hash = bcrypt.hashSync("bacon", 8);
+  const hash = bcrypt.hashSync(user.password, 8);
 
   //override plain-text pass with hash
   user.password = hash;
@@ -27,10 +31,11 @@ router.post("/register", (req, res) => {
 //login -> checks if password is valid
 router.post("/login", (req, res) => {
   const { username, password } = req.body;
-
-  Users.findBy({ username })
+console.log(req.body);
+  Users.findByFilter({ username })
     .first()
     .then(user => {
+      console.log("user", user);
       if (user && bcrypt.compareSync(password, user.password)) {
         res
           .status(200)
