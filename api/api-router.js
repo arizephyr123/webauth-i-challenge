@@ -37,6 +37,9 @@ console.log(req.body);
     .then(user => {
       console.log("user", user);
       if (user && bcrypt.compareSync(password, user.password)) {
+//save a session cookie and send back a cookie
+req.session.user = user;
+
         res
           .status(200)
           .json({
