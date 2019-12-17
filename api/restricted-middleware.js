@@ -1,8 +1,7 @@
-const express = require("express");
-const helmet = require("helmet");
-const cors = require("cors");
-
-module.exports = server => {
-  server.use(helmet()), 
-  server.use(express.json()), server.use(cors());
+module.exports = (req, res, next) => {
+  if (req.session && req.session.user) {
+    next();
+  } else {
+    res.status(401).json( message: "You must be logged in to see this page." )
+  }
 };
